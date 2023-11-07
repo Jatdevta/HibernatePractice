@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 05-Nov-2023, 2:01:31 PM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping>
+	<class name="in.co.rays.dicriminator.Payment" table="PAYMENTDIS">
+		<id name="id" type="int">
+			<column name="PAYMENT_ID" />
+			<generator class="increment" />
+		</id>
+		<discriminator column="DISCRIMNATOR_VALUE" type="string"></discriminator>
+		<property name="amount" type="int">
+			<column name="AMOUNT" />
+		</property>
+		<property name="paymentType" type="java.lang.String">
+			<column name="PAYMENTTYPE" />
+		</property>
+		<subclass
+			name="in.co.rays.dicriminator.CreditCardPayment"
+			discriminator-value="CREDIT">
+			<join table="CREDIT_PAYMENT">
+				<key column="PAYMENT_ID" />
+				<property name="ccType" column="CC_TYPE" />
+			</join>
+		</subclass>
+		<subclass name="in.co.rays.dicriminator.Cash"
+			discriminator-value="CASH">
+			<join table="CASH">
+				<key column="PAYMENT_ID" />
+			</join>
+		</subclass>
+		<subclass name="in.co.rays.dicriminator.Cheque"
+			discriminator-value="CHEQUE">
+			<join table="CHEQUE">
+				<key column="PAYMENT_ID" />
+				<property name="bankName" column="BANK_NAME" />
+				<property name="chqNumber" column="CHQ_NUMBER" />
+			</join>
+		</subclass>
+
+	</class>
+</hibernate-mapping>
